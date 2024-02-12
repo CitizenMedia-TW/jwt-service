@@ -4,7 +4,7 @@ import (
 	"auth-service/internal/config"
 	"auth-service/internal/helper"
 	"auth-service/internal/models"
-	"auth-service/proto/auth-service"
+	"auth-service/protobuffs/auth-service"
 	"context"
 	"strings"
 
