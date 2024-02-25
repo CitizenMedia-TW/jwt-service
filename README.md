@@ -24,7 +24,7 @@
 > | http code    | content-type       | response                                               |
 > | ------------ | ------------------ | ------------------------------------------------------ |
 > | `200`        | `application/json` | `{"message": "Success", "token": "Bearer your_token"}` |
-> | `400`, `500` | `application/json` | `{"message":"Failed", "error":"Error messages"}`       |
+> | `400`, `500` | `application/json` | `{"message": "Failed", "error":"Error messages"}`      |
 
 </details>
 
@@ -51,9 +51,9 @@ type jwtContent = {
 }
 ```
 
-> | http code | content-type       | response                                          |
-> | --------- | ------------------ | ------------------------------------------------- |
-> | `200`     | `application/json` | `{"message": "Success", "jwtContent": jwtContent` |
-> | `400`     | `application/json` | `{"message":"Failed", "error":"Error messages"}`  |
+> | http code | content-type       | response                                           |
+> | --------- | ------------------ | -------------------------------------------------- |
+> | `200`     | `application/json` | `{"message": "Success", "jwtContent": jwtContent`} |
+> | `400`     | `application/json` | `{"message": "Failed", "error":"Error messages"}`  |
 
 </details>
