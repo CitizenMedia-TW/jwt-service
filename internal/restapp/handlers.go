@@ -3,6 +3,7 @@ package restapp
 import (
 	"auth-service/internal/helper"
 	"auth-service/internal/models"
+	"auth-service/protobuffs/auth-service"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -54,10 +55,14 @@ func (s *RestServer) GenerateToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	res := struct {
-		Message string `json:"message"`
-		Token   string `json:"token"`
-	}{Message: "Success", Token: "Bearer " + tokenString}
+	// res := struct {
+	// 	Message string `json:"message"`
+	// 	Token   string `json:"token"`
+	// }{Message: "Success", Token: "Bearer " + tokenString}
+	res := &auth.GenerateTokenResponse{
+		Message: "Success",
+		Token:   "Bearer " + tokenString,
+	}
 	json.NewEncoder(w).Encode(res)
 
 	return
@@ -81,10 +86,17 @@ func (s *RestServer) VerifyToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	res := struct {
-		Message    string             `json:"message"`
-		JWTContent *models.JWTContent `json:"jwtContent"`
-	}{Message: "Success", JWTContent: claims}
+	// res := struct {
+	// 	Message    string             `json:"message"`
+	// 	JWTContent *models.JWTContent `json:"jwtContent"`
+	// }{Message: "Success", JWTContent: claims}
+	res := &auth.VerifyTokenResponse{
+		Message: "Success",
+		JwtContent: &auth.JwtContent{
+			Id:   claims.Id,
+			Mail: claims.Mail,
+			Name: claims.Name,
+		}}
 	json.NewEncoder(w).Encode(res)
 
 	return
