@@ -25,7 +25,7 @@ func (s *RestServer) GenerateToken(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		for _, v := range []string{"id", "mail", "name"} {
+		for _, v := range []string{"mail", "name"} {
 			if !r.PostForm.Has(v) {
 				s.httpError(&w, v+" is required", http.StatusBadRequest)
 				return
@@ -33,7 +33,6 @@ func (s *RestServer) GenerateToken(w http.ResponseWriter, r *http.Request) {
 		}
 
 		signContent = models.JWTContent{
-			Id:   r.PostFormValue("id"),
 			Mail: r.PostFormValue("mail"),
 			Name: r.PostFormValue("name"),
 		}
@@ -93,7 +92,6 @@ func (s *RestServer) VerifyToken(w http.ResponseWriter, r *http.Request) {
 	res := &auth.VerifyTokenResponse{
 		Message: "Success",
 		JwtContent: &auth.JwtContent{
-			Id:   claims.Id,
 			Mail: claims.Mail,
 			Name: claims.Name,
 		}}

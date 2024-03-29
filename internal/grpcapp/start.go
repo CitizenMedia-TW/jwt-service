@@ -32,14 +32,13 @@ func (s *GrpcServer) SayHello(ctx context.Context, in *auth.Empty) (*auth.HelloR
 }
 
 func (s *GrpcServer) GenerateToken(ctx context.Context, in *auth.GenerateTokenRequest) (*auth.GenerateTokenResponse, error) {
-	for _, val := range []string{in.Id, in.Mail, in.Name} {
+	for _, val := range []string{in.Mail, in.Name} {
 		if val == "" {
 			return &auth.GenerateTokenResponse{Message: "Failed", Token: ""}, nil
 		}
 	}
 
 	signContent := models.JWTContent{
-		Id:   in.Id,
 		Mail: in.Mail,
 		Name: in.Name,
 	}
@@ -78,7 +77,6 @@ func (s *GrpcServer) VerifyToken(ctx context.Context, in *auth.VerifyTokenReques
 	return &auth.VerifyTokenResponse{
 		Message: "Success",
 		JwtContent: &auth.JwtContent{
-			Id:   claims.Id,
 			Mail: claims.Mail,
 			Name: claims.Name,
 		},
