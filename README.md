@@ -1,4 +1,4 @@
-# auth-service
+# jwt-service
 
 - Inspired by https://gist.github.com/azagniotov/a4b16faf0febd12efbc6c3d7370383a6
 - RESTful APIs running on `localhost:7999`

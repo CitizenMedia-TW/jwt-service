@@ -1,11 +1,11 @@
 package app
 
 import (
-	"auth-service/internal/config"
-	"auth-service/internal/grpcapp"
-	"auth-service/internal/restapp"
 	"flag"
 	"fmt"
+	"jwt-service/internal/config"
+	"jwt-service/internal/grpcapp"
+	"jwt-service/internal/restapp"
 	"log"
 	"net"
 	"net/http"

@@ -1,10 +1,10 @@
 package restapp
 
 import (
-	"auth-service/internal/helper"
-	"auth-service/internal/models"
-	"auth-service/protobuffs/auth-service"
 	"encoding/json"
+	"jwt-service/internal/helper"
+	"jwt-service/internal/models"
+	"jwt-service/protobuffs/jwt-service"
 	"net/http"
 	"strings"
 )
@@ -58,7 +58,7 @@ func (s *RestServer) GenerateToken(w http.ResponseWriter, r *http.Request) {
 	// 	Message string `json:"message"`
 	// 	Token   string `json:"token"`
 	// }{Message: "Success", Token: "Bearer " + tokenString}
-	res := &auth.GenerateTokenResponse{
+	res := &jwt.GenerateTokenResponse{
 		Message: "Success",
 		Token:   "Bearer " + tokenString,
 	}
@@ -89,9 +89,9 @@ func (s *RestServer) VerifyToken(w http.ResponseWriter, r *http.Request) {
 	// 	Message    string             `json:"message"`
 	// 	JWTContent *models.JWTContent `json:"jwtContent"`
 	// }{Message: "Success", JWTContent: claims}
-	res := &auth.VerifyTokenResponse{
+	res := &jwt.VerifyTokenResponse{
 		Message: "Success",
-		JwtContent: &auth.JwtContent{
+		JwtContent: &jwt.JwtContent{
 			Mail: claims.Mail,
 			Name: claims.Name,
 		}}

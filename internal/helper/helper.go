@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"auth-service/internal/models"
+	"jwt-service/internal/models"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"

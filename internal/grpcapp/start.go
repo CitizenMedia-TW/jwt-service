@@ -1,11 +1,11 @@
 package grpcapp
 
 import (
-	"auth-service/internal/config"
-	"auth-service/internal/helper"
-	"auth-service/internal/models"
-	"auth-service/protobuffs/auth-service"
 	"context"
+	"jwt-service/internal/config"
+	"jwt-service/internal/helper"
+	"jwt-service/internal/models"
+	"jwt-service/protobuffs/jwt-service"
 	"strings"
 
 	"google.golang.org/grpc"
@@ -14,27 +14,27 @@ import (
 type GrpcServer struct {
 	config config.Config
 	Server *grpc.Server
-	auth.UnimplementedAuthServiceServer
+	jwt.UnimplementedJWTServiceServer
 }
 
 func New(cnf config.Config) *GrpcServer {
 	s := grpc.NewServer()
-	auth.RegisterAuthServiceServer(s, &GrpcServer{config: cnf})
+	jwt.RegisterJWTServiceServer(s, &GrpcServer{config: cnf})
 	return &GrpcServer{config: cnf, Server: s}
 }
 
 type GRPCServer interface {
-	SayHello(context.Context, *auth.Empty) (*auth.HelloReply, error)
+	SayHello(context.Context, *jwt.Empty) (*jwt.HelloReply, error)
 }
 
-func (s *GrpcServer) SayHello(ctx context.Context, in *auth.Empty) (*auth.HelloReply, error) {
-	return &auth.HelloReply{Message: "hello"}, nil
+func (s *GrpcServer) SayHello(ctx context.Context, in *jwt.Empty) (*jwt.HelloReply, error) {
+	return &jwt.HelloReply{Message: "hello"}, nil
 }
 
-func (s *GrpcServer) GenerateToken(ctx context.Context, in *auth.GenerateTokenRequest) (*auth.GenerateTokenResponse, error) {
+func (s *GrpcServer) GenerateToken(ctx context.Context, in *jwt.GenerateTokenRequest) (*jwt.GenerateTokenResponse, error) {
 	for _, val := range []string{in.Mail, in.Name} {
 		if val == "" {
-			return &auth.GenerateTokenResponse{Message: "Failed", Token: ""}, nil
+			return &jwt.GenerateTokenResponse{Message: "Failed", Token: ""}, nil
 		}
 	}
 
@@ -44,21 +44,21 @@ func (s *GrpcServer) GenerateToken(ctx context.Context, in *auth.GenerateTokenRe
 	}
 	token, err := helper.JWTSignContent(signContent, s.config.Secret)
 	if err != nil {
-		return &auth.GenerateTokenResponse{
+		return &jwt.GenerateTokenResponse{
 			Message: "Failed",
 			Token:   "",
 		}, err
 	}
 
-	return &auth.GenerateTokenResponse{
+	return &jwt.GenerateTokenResponse{
 		Message: "Success",
 		Token:   "Bearer " + token,
 	}, nil
 }
 
-func (s *GrpcServer) VerifyToken(ctx context.Context, in *auth.VerifyTokenRequest) (*auth.VerifyTokenResponse, error) {
+func (s *GrpcServer) VerifyToken(ctx context.Context, in *jwt.VerifyTokenRequest) (*jwt.VerifyTokenResponse, error) {
 	if strings.Split(in.Token, " ")[0] != "Bearer" {
-		return &auth.VerifyTokenResponse{
+		return &jwt.VerifyTokenResponse{
 			Message:    "Failed",
 			JwtContent: nil,
 		}, nil
@@ -68,15 +68,15 @@ func (s *GrpcServer) VerifyToken(ctx context.Context, in *auth.VerifyTokenReques
 
 	claims, err := helper.JWTParseToken(token, s.config.Secret)
 	if err != nil {
-		return &auth.VerifyTokenResponse{
+		return &jwt.VerifyTokenResponse{
 			Message:    "Failed",
 			JwtContent: nil,
 		}, err
 	}
 
-	return &auth.VerifyTokenResponse{
+	return &jwt.VerifyTokenResponse{
 		Message: "Success",
-		JwtContent: &auth.JwtContent{
+		JwtContent: &jwt.JwtContent{
 			Mail: claims.Mail,
 			Name: claims.Name,
 		},

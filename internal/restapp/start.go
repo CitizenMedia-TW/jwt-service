@@ -1,8 +1,8 @@
 package restapp
 
 import (
-	"auth-service/internal/config"
 	"encoding/json"
+	"jwt-service/internal/config"
 	"net/http"
 )
 

@@ -1,14 +1,14 @@
 package main
 
 import (
-	"auth-service/internal/app"
-	"auth-service/internal/config"
 	"github.com/joho/godotenv"
+	"jwt-service/internal/app"
+	"jwt-service/internal/config"
 	"log"
 )
 
 func main() {
-	log.Println("Starting auth-service's server")
+	log.Println("Starting jwt-service's server")
 
 	// Load .env file
 	err := godotenv.Load()
