@@ -39,8 +39,8 @@ func (s *GrpcServer) GenerateToken(ctx context.Context, in *jwt.GenerateTokenReq
 	}
 
 	signContent := models.JWTContent{
-		Mail: in.Mail,
-		Name: in.Name,
+		UserMail: in.Mail,
+		UserName: in.Name,
 	}
 	token, err := helper.JWTSignContent(signContent, s.config.Secret)
 	if err != nil {
@@ -77,8 +77,8 @@ func (s *GrpcServer) VerifyToken(ctx context.Context, in *jwt.VerifyTokenRequest
 	return &jwt.VerifyTokenResponse{
 		Message: "Success",
 		JwtContent: &jwt.JwtContent{
-			Mail: claims.Mail,
-			Name: claims.Name,
+			Mail: claims.UserMail,
+			Name: claims.UserName,
 		},
 	}, nil
 }

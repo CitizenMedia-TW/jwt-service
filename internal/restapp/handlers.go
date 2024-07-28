@@ -33,8 +33,8 @@ func (s *RestServer) GenerateToken(w http.ResponseWriter, r *http.Request) {
 		}
 
 		signContent = models.JWTContent{
-			Mail: r.PostFormValue("mail"),
-			Name: r.PostFormValue("name"),
+			UserMail: r.PostFormValue("mail"),
+			UserName: r.PostFormValue("name"),
 		}
 	case "application/json":
 		err := json.NewDecoder(r.Body).Decode(&signContent)
@@ -92,8 +92,8 @@ func (s *RestServer) VerifyToken(w http.ResponseWriter, r *http.Request) {
 	res := &jwt.VerifyTokenResponse{
 		Message: "Success",
 		JwtContent: &jwt.JwtContent{
-			Mail: claims.Mail,
-			Name: claims.Name,
+			Mail: claims.UserMail,
+			Name: claims.UserName,
 		}}
 	json.NewEncoder(w).Encode(res)
 
